@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+                html {
+                background: url('{% static "images/background.jpg" %}') no-repeat center fixed;
+                background-size: cover;
+            }
+            .search-bar {
+                margin: 10px; /* Adjust margin as needed */
+                font-family: Arial, sans-serif; /* Choose appropriate font */
+            }
+
+            /* Style for the input field */
+            .search-bar input[type="text"] {
+                padding: 3px; /* Padding around the text input */
+                width: 200px; /* Adjust width as needed */
+                border: 1px solid #ccc; /* Border color and width */
+                border-radius: 4px; /* Rounded corners */
+                font-size: 15px; /* Font size */
+                outline: none; /* Remove outline */
+            }
+
+            /* Style for the search button */
+            .search-bar button {
+                background-color: #007bff; /* Button background color */
+                color: white; /* Button text color */
+                border: none; /* Remove border */
+                padding: 10px 15px; /* Padding inside the button */
+                cursor: pointer; /* Cursor style on hover */
+                border-radius: 4px; /* Rounded corners */
+                margin-left: -4px; /* Adjust to align button with input */
+            }
+
+            /* Style for icon inside the button */
+            .search-bar button i {
+                font-size: 16px; /* Icon size */
+            }
+
+            /* Hover effect for the button */
+            .search-bar button:hover {
+                background-color: #0056b3; /* Darker background color on hover */
+            }
+        </style>
+        {% block title %}
+        {% endblock %}
+    </head>
+    <body>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/addtask/">Add Task</a></li>
+            <li style="float: inline-end;"><a href="{% url 'logout' %}">Log Out</a></li>
+            {% if request.path == '/' %}
+            <li style="float: inline-end;">
+                <form method="GET" id="search-form" class="search-bar">
+                    <input type="text" name="q" placeholder="Search...." id="search-input" value="{{ request.GET.q }}">
+                </form>
+            </li>
+            {% endif %}
+        </ul>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

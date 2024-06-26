@@ -1,0 +1,97 @@
+<!-- task_list.html -->
+
+{% extends 'master.html' %}
+
+{% block title %}
+    <title>Home</title>
+    
+{% endblock %}
+
+{% block content %}
+    <h1>TASK VIEWER</h1>
+    {% if user.is_authenticated and not welcome_message_shown %}
+        <h3 style="text-align: center;">Welcome {{ user.username|title }}!!</h3>
+    {% endif %}
+    {% if alltasks %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="4">Tasks</th>
+            </tr>
+        </thead>
+        <tbody id="task-list">
+            {% for task in alltasks %}
+            <tr>
+                <td id="taskname">
+                    {% if task.completed %}
+                        <s><a href="{% url 'taskdetails' task.id %}">{{ task.task_name|title }}</a></s>
+                    {% else %}
+                        <a href="{% url 'taskdetails' task.id %}">{{ task.task_name|title }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url 'taskupdate' task.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url 'removetask' task.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+                <td>
+                    {% if not task.completed %}
+                        <form action="{% url 'mark_task_completed' task.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">Mark as Completed</button>
+                        </form>
+                    {% else %}
+                        <span>Completed</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="container">
+        <div class="card">
+            <h2>No tasks to Display!!</h2>
+            <p>Try adding new tasks</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <br>
+    <br>
+    <script>
+    $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            var query = $(this).val().trim();  // Get input value and trim whitespace
+
+            $.ajax({
+                type: 'GET',
+                url: '/',
+                data: {q: query},  // Pass query as GET parameter
+                dataType: 'html',  // Expect HTML response
+                success: function(data) {
+                    var updatedHtml = $(data).find('#task-list').html();  // Extract tbody content
+                    $('#task-list').html(updatedHtml);  // Update tbody with filtered content
+
+                    // Show/hide no tasks message based on result
+                    if ($('#task-list').children().length === 0) {
+                        $('#no-tasks').show();
+                    } else {
+                        $('#no-tasks').hide();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

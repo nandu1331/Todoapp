@@ -1,0 +1,44 @@
+{% extends 'master.html' %}
+{% block title %}
+    <title>Add Task</title>
+    <style>
+        #view-task-button {
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+            color: white;
+            margin: -20px auto;
+        }
+
+        #view-task-button a {
+            color: whitesmoke;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>ADD TASK</h1>
+    <form method="POST" class="task-form" action="{% url 'addtask' %}">
+        {% csrf_token %}
+        <label for="task_name">Task Name:</label>
+        <input type="text" name="task_name" style="width: auto;" placeholder="Task name.....">
+        <label for="task_description">Task description:</label>
+        <input type="text" name="task_description" placeholder="Task description here.....">
+        <label for="task_date">Date:</label>
+        <input type="date" name="task_date">
+        <label for="task_start_time">From:</label>
+        <input type="time" name="task_start_time">
+        <label for="task_end_time">To:</label>
+        <input type="time" name="task_end_time">
+        <button type="submit">Add Task</button>
+    </form>
+    {% if success %}
+        <p style="color: green;">{{ success }}</p>
+    {% endif %}
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <br>
+    <br>
+    <button id="view-task-button"><a href="/">View Tasks</a></button>
+{% endblock %}

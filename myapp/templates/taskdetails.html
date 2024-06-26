@@ -1,0 +1,89 @@
+{% extends 'master.html' %}
+{% block title %}
+    <title>Task Details</title>
+{% endblock %}
+{% block content %}
+<style>
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Title Section Styles */
+.title-section {
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(to bottom right, #1e3c72, #2a5298); /* Blue gradient */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Details Section Styles */
+.details-section {
+    width: 70%;
+    height: 100%;
+    background: linear-gradient(to bottom right, #ffffff, #dbe6f6); /* White to light blue gradient */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.details-section h3, .details-section p, .details-section a {
+    margin: 15px 0;
+    font-size: 18px;
+}
+
+.details-section h1 {
+    margin: 20px 0;
+    font-size: 36px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .title-section, .details-section {
+        width: 100%;
+        height: 50vh;
+    }
+
+    .details-section {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="container">
+    <div class="title-section">
+        <h1>{{ task.task_name|title }}</h1>
+    </div>
+    <div class="details-section">
+        <h3>{{ task.task_date }}</h3>
+        <p>{{ task.task_description|title }}</p>
+        <p>From {{ task.task_start_time }} to {{ task.task_end_time }}</p>
+        <p>Status: {% if task.completed %}Completed{% else %}Not Completed{% endif %}</p>
+        <a href="/">Back to tasks</a>
+    </div>
+</div>
+{% endblock %}

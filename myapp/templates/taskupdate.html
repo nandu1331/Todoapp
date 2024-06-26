@@ -1,0 +1,60 @@
+{% extends 'master.html' %}
+{% block title %}
+    <title>Update Task</title>
+    <style>
+        #task_completed {
+            width: min-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            size: 200px;
+        }
+        #view-task-button {
+            display: flex;
+            justify-content: center;
+            box-sizing: border-box;
+            color: white;
+            margin: -25px auto;
+        }
+
+        #view-task-button a {
+            color: whitesmoke;
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    {% if success %}
+        <p style="color: green; text-align: center;">{{ success }}</p>
+    {% endif %}
+    {% if error %}
+        <p style="color: red; text-align: center;">{{ error }}</p>
+    {% endif %}
+    {% if task %}
+        <h1> Editing Task: {{ task.task_name }}</h1>
+        <form method="POST" action="{% url 'taskupdate' task.id %}" class="task-form">
+            {% csrf_token %}
+            <label for="task_name">Task Name:</label>
+            <input type="text" value="{{ task.task_name }}" id="task_name" name="task_name" required style="width: auto;" autofocus>
+            <label for="task_description">Task description:</label>
+            <input type="text" value="{{ task.task_description }}" name="task_description" id="task_description">
+            <label for="task_date">Date:</label>
+            <input type="date" name="task_date" value="{{ task.task_date|date:'Y-m-d'}}" required id="task_date">
+            <label for="task_start_time">From:</label>
+           <input type="time" name="task_start_time" value="{{ task.task_start_time|time:'H:i' }}" required id="task_start_time">
+            <label for="task_end_time">To:</label>
+            <input type="time" name="task_end_time" value="{{ task.task_end_time|time:'H:i' }}" required id="task_end_time">
+            <label for="task_completed" id="task_completed">Status:</label>
+            <input type="checkbox" name="task_completed" id="task_completed" {% if task.completed %}checked{% endif %} >
+           <button type="submit">Save changes...</button>
+           <input type="reset" value="Reset" id="reset">
+        </form>
+    {% endif %}
+    {% if not task %}
+        <h1>Error</h1>
+    {% endif %}
+    <br>
+    <br>
+    <button id="view-task-button"><a href="/">View Tasks</a></button>
+{% endblock %}

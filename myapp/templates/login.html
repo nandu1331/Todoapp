@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'auth-styles.css' %}">
+        <title>Login</title>
+        <style>
+               body {
+                background-image: url('{% static "images/todo.jpg" %}');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="card">
+                {% if error %}
+                    <P style="color: red;">{{ error }}</P>
+                {% endif %}
+                <h2 class="header">Login</h2>
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                <br>
+                <p>Don't have an account?? <a href="{% url 'signup' %}">Sign Up</a></p>
+            </div>
+        </div>
+    </body>
+</html>
